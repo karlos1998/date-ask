@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import InvitationPreview from '$lib/components/InvitationPreview.svelte';
+	import ThemePicker from '$lib/components/ThemePicker.svelte';
+	import { DEFAULT_THEME, getTheme } from '$lib/themes';
 	import { MAX_NAME_LENGTH, MAX_OPTION_LENGTH, MAX_OPTIONS } from '$lib/validation';
 	import type { PageProps } from './$types';
 
@@ -15,10 +18,18 @@
 	];
 
 	let name = $state(form?.name ?? '');
+	let theme = $state(getTheme(form?.theme ?? DEFAULT_THEME).id);
 	let options = $state(form?.options?.length ? form.options : ['', '', '']);
 	let submitting = $state(false);
 
 	const previewName = $derived(name.trim() || 'Basia');
+
+	/** Opens the full invitation in demo mode with what has been typed so far. */
+	const demoUrl = $derived.by(() => {
+		const params = new URLSearchParams({ styl: theme, imie: previewName });
+		for (const option of options) if (option.trim()) params.append('opcja', option.trim());
+		return `/podglad?${params}`;
+	});
 
 	function addOption() {
 		if (options.length < MAX_OPTIONS) options.push('');
@@ -30,21 +41,25 @@
 </script>
 
 <svelte:head>
-	<title>date-ask · Zaproś ją na randkę</title>
-	<meta name="description" content="Stwórz zaproszenie na randkę, na które nie da się odpowiedzieć „nie”." />
+	<title>date-ask: zaproszenie, na które nie da się odmówić</title>
+	<meta
+		name="description"
+		content="Stwórz zaproszenie na randkę albo spotkanie, na które nie da się odpowiedzieć „nie”."
+	/>
 </svelte:head>
 
 <main class="page">
-	<section class="hero">
-		<h1 class="intro">Wyślij jej link z pytaniem, na które nie da się odpowiedzieć „nie”.</h1>
-		<div class="preview" aria-hidden="true">
-			<p class="preview-question">Hej, {previewName}. Umówimy się?</p>
-			<div class="preview-buttons">
-				<span class="btn btn-yes">Tak</span>
-				<span class="btn btn-ghost preview-no">Nie</span>
-			</div>
-		</div>
-	</section>
+	<header class="hero">
+		<h1>Zaproszenie, na które nie da się odpowiedzieć „nie”</h1>
+		<p class="intro">
+			Wpisz imię, wybierz styl i propozycje spotkania. Dostaniesz link do wysłania i swoją stronę,
+			na której zobaczysz odpowiedź.
+		</p>
+	</header>
+
+	<div class="hero-preview">
+		<InvitationPreview themeId={theme} name={previewName} />
+	</div>
 
 	<form
 		class="creator"
@@ -58,7 +73,7 @@
 		}}
 	>
 		<div class="field">
-			<label for="name">Jak ma na imię?</label>
+			<label for="name">Kogo zapraszasz?</label>
 			<input
 				id="name"
 				name="name"
@@ -70,6 +85,14 @@
 				required
 			/>
 		</div>
+
+		<fieldset class="field">
+			<legend>Styl zaproszenia</legend>
+			<ThemePicker bind:value={theme} name={previewName} />
+			<a class="demo-link" href={demoUrl} target="_blank" rel="noopener">
+				Wypróbuj ten styl na pełnym ekranie
+			</a>
+		</fieldset>
 
 		<fieldset class="field">
 			<legend>Co proponujesz?</legend>
@@ -116,56 +139,45 @@
 
 <style>
 	.page {
-		max-width: 34rem;
+		display: grid;
+		gap: 2rem;
+		max-width: 40rem;
 		margin: 0 auto;
-		padding: clamp(2rem, 8vh, 5rem) var(--gutter) 4rem;
+		padding: clamp(2rem, 8vh, 4.5rem) var(--gutter) 4rem;
+	}
+
+	.hero {
+		display: grid;
+		gap: 0.875rem;
+	}
+
+	h1 {
+		font-size: clamp(2rem, 7vw, 3rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		line-height: 1.05;
+		max-width: 18ch;
 	}
 
 	.intro {
-		font-family: var(--font-body);
-		font-weight: 600;
-		line-height: 1.4;
-		font-size: 1.125rem;
-		max-width: 26ch;
-		color: color-mix(in srgb, var(--milk) 80%, transparent);
+		max-width: 52ch;
+		color: var(--muted);
 	}
 
-	.preview {
-		margin-top: 1.5rem;
-		padding: 2rem 1.5rem 1.75rem;
-		border-radius: 28px;
-		background: var(--cherry-deep);
-		transform: rotate(-1.5deg);
-		box-shadow: 0 1.5rem 3rem -1.5rem rgb(20 0 8 / 0.6);
-	}
-
-	.preview-question {
-		font-family: var(--font-display);
-		line-height: 1.05;
-		text-wrap: balance;
-		font-size: clamp(2.25rem, 9vw, 3.25rem);
-		overflow-wrap: anywhere;
-	}
-
-	.preview-buttons {
-		display: flex;
-		gap: 0.75rem;
-		margin-top: 1.5rem;
-	}
-
-	.preview-no {
-		transform: translate(0.75rem, 0.5rem) rotate(6deg);
+	.hero-preview {
+		box-shadow: 0 1.5rem 3rem -1.75rem rgb(28 27 34 / 0.45);
+		border-radius: 24px;
 	}
 
 	.creator {
 		display: grid;
-		gap: 2rem;
-		margin-top: 3rem;
+		gap: 2.25rem;
+		margin-top: 0.5rem;
 	}
 
 	.field {
 		display: grid;
-		gap: 0.5rem;
+		gap: 0.625rem;
 		margin: 0;
 		padding: 0;
 		border: 0;
@@ -179,29 +191,37 @@
 		font-size: 1.125rem;
 	}
 
+	legend {
+		margin-bottom: 0.625rem;
+	}
+
 	.hint {
-		margin-bottom: 0.25rem;
 		font-size: 0.9375rem;
-		color: color-mix(in srgb, var(--milk) 70%, transparent);
+		color: var(--muted);
 	}
 
 	input {
 		width: 100%;
 		min-height: 3.25rem;
 		padding: 0.75rem 1rem;
-		border: 2px solid var(--cherry-soft);
-		border-radius: var(--radius-field);
-		background: var(--cherry-deep);
+		border: 2px solid var(--line);
+		border-radius: var(--radius);
+		background: var(--surface);
 		font-size: 1.0625rem; /* ≥16px stops iOS from zooming into the field */
 	}
 
 	input::placeholder {
-		color: color-mix(in srgb, var(--milk) 40%, transparent);
+		color: color-mix(in srgb, var(--muted) 70%, transparent);
 	}
 
 	input:focus-visible {
 		outline: none;
-		border-color: var(--blush);
+		border-color: var(--accent);
+	}
+
+	.demo-link {
+		justify-self: start;
+		font-weight: 700;
 	}
 
 	.options {
@@ -221,16 +241,16 @@
 		flex: none;
 		width: 3.25rem;
 		border: 0;
-		border-radius: var(--radius-field);
+		border-radius: var(--radius);
 		background: transparent;
 		font-size: 1.5rem;
 		line-height: 1;
-		color: color-mix(in srgb, var(--milk) 60%, transparent);
+		color: var(--muted);
 		cursor: pointer;
 	}
 
 	.remove:hover {
-		color: var(--milk);
+		color: var(--text);
 	}
 
 	.add {
@@ -239,15 +259,15 @@
 		border: 0;
 		background: none;
 		font-weight: 700;
-		color: var(--butter);
+		color: var(--accent);
 		cursor: pointer;
 	}
 
 	.error {
 		padding: 0.75rem 1rem;
-		border-radius: var(--radius-field);
-		background: var(--milk);
-		color: var(--ink);
+		border-radius: var(--radius);
+		background: var(--danger-bg);
+		color: var(--danger-text);
 		font-weight: 600;
 	}
 
