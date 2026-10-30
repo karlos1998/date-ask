@@ -199,5 +199,5 @@
 	letter-spacing: var(--display-tracking);
 	line-height: 1.05;
 	text-wrap: balance;
-	overflow-wrap: anywhere;
+	overflow-wrap: break-word;
 }

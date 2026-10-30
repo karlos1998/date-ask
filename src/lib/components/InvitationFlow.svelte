@@ -175,6 +175,7 @@
 	}
 
 	.step {
+		container-type: inline-size;
 		display: grid;
 		gap: 1.25rem;
 		width: 100%;
@@ -182,12 +183,13 @@
 		text-align: center;
 	}
 
+	/* Sized to the card, not the screen, so words don't break inside padded themes. */
 	h1 {
-		font-size: clamp(2.25rem, 8vw, 3.25rem);
+		font-size: clamp(1.75rem, 10cqi, 3.25rem);
 	}
 
 	.question {
-		font-size: clamp(2.75rem, 12vw, 4.75rem);
+		font-size: clamp(2.25rem, 14cqi, 4.5rem);
 	}
 
 	.answers {
