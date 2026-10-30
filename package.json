@@ -5,7 +5,7 @@
 	"type": "module",
 	"description": "Ask someone out with a link where \"no\" simply isn't an option.",
 	"engines": {
-		"node": ">=20.19"
+		"node": "^20.19 || ^22.12 || >=24"
 	},
 	"scripts": {
 		"dev": "vite dev",

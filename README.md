@@ -33,7 +33,7 @@ Forms work without JavaScript and are progressively enhanced with `use:enhance`.
 
 ## Getting started
 
-Requires Node.js 20.19 or newer.
+Requires Node.js 20.19+, 22.12+ or 24+ (see `.nvmrc`; odd-numbered releases like 23 are not supported).
 
 ```bash
 npm install
