@@ -19,6 +19,21 @@
 	font-family: var(--font-body);
 }
 
+/* Romantyczny: deep cherry, butter yellow and a bold retro script. */
+[data-theme='romantic'] {
+	--bg: #6e0f2c;
+	--surface: #4d0a1f;
+	--text: #fff1f4;
+	--muted: color-mix(in srgb, #fff1f4 75%, transparent);
+	--accent: #ffd45c;
+	--accent-text: #2a0612;
+	--line: color-mix(in srgb, #fff1f4 55%, transparent);
+	--font-display: 'Shrikhand', Georgia, serif;
+	--font-body: 'Figtree Variable', system-ui, sans-serif;
+	--radius: 20px;
+	--button-radius: 999px;
+}
+
 /* Wieczór: midnight blue, champagne gold and a high-contrast serif. */
 [data-theme='evening'] {
 	--bg: #18223a;

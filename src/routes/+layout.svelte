@@ -3,6 +3,7 @@
 	// so importing every theme's typeface here costs nothing up front.
 	import '@fontsource-variable/figtree';
 	import '@fontsource/dm-serif-display';
+	import '@fontsource/shrikhand';
 	import '@fontsource-variable/baloo-2';
 	import '@fontsource-variable/bricolage-grotesque';
 	import '@fontsource-variable/pixelify-sans';

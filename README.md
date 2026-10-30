@@ -10,11 +10,12 @@ burst of fireworks. You follow everything on your own status page.
 
 ## Styles
 
-The sender picks one of five styles with live previews, and can try the full
+The sender picks one of six styles with live previews, and can try the full
 invitation in demo mode (`/podglad`) before creating it:
 
 | Style      | Mood                                             |
 | ---------- | ------------------------------------------------ |
+| Romantyczny | Cherry red and butter yellow, the default       |
 | Wieczór    | Midnight blue and gold with a serif, for a date  |
 | Słodki     | Pastel lilac and peach, rounded and cute          |
 | Ziomek     | Sky blue, chunky outlines, for friends            |
@@ -94,7 +95,7 @@ src/
 │   │   ├── InvitationPreview.svelte      static preview of a style
 │   │   ├── RunawayButton.svelte          the button that can't be pressed
 │   │   └── ThemePicker.svelte
-│   ├── themes.ts / themes.css            the five styles
+│   ├── themes.ts / themes.css            the six styles
 │   ├── server/
 │   │   ├── db/schema.ts                  tables and relations
 │   │   └── invitations.ts                data access

@@ -23,6 +23,28 @@ export interface Theme {
 
 export const THEMES = [
 	{
+		id: 'romantic',
+		name: 'Romantyczny',
+		mood: 'Wiśniowo i z sercem',
+		themeColor: '#6e0f2c',
+		fireworks: ['#ffd45c', '#ff8fb1', '#fff1f4', '#ff5c8a'],
+		copy: {
+			teases: [
+				'',
+				'Ups, wyślizgnął się.',
+				'Ten przycisk jest bardzo nieśmiały.',
+				'Może spróbuj tego żółtego?',
+				'On naprawdę nie chce być kliknięty.',
+				'Żółty jest dużo bliżej 😉'
+			],
+			pickTitle: 'Super! To gdzie idziemy?',
+			reviewTitle: 'Dobry wybór.',
+			confirm: 'Potwierdzam',
+			doneTitle: 'Jesteśmy umówieni!',
+			doneMessage: 'Dziękuję, że się zgodziłaś. Już nie mogę się doczekać.'
+		}
+	},
+	{
 		id: 'evening',
 		name: 'Wieczór',
 		mood: 'Elegancko, na randkę',
@@ -137,7 +159,7 @@ export const THEMES = [
 export type ThemeId = (typeof THEMES)[number]['id'];
 
 export const THEME_IDS = THEMES.map((theme) => theme.id) as [ThemeId, ...ThemeId[]];
-export const DEFAULT_THEME: ThemeId = 'evening';
+export const DEFAULT_THEME: ThemeId = 'romantic';
 
 export function getTheme(id: string): Theme {
 	return THEMES.find((theme) => theme.id === id) ?? THEMES[0];

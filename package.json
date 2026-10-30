@@ -25,6 +25,7 @@
 		"@fontsource-variable/instrument-sans": "^5.2.0",
 		"@fontsource-variable/pixelify-sans": "^5.2.0",
 		"@fontsource/dm-serif-display": "^5.2.0",
+		"@fontsource/shrikhand": "^5.2.0",
 		"@libsql/client": "^0.15.0",
 		"canvas-confetti": "^1.9.3",
 		"drizzle-orm": "^0.44.0",
