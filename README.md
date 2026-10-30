@@ -8,6 +8,22 @@ from the mouse on desktop and from her finger on mobile, while "yes" keeps growi
 After saying yes she picks one of your ideas, can change her mind, and confirms to a
 burst of fireworks. You follow everything on your own status page.
 
+## Styles
+
+The sender picks one of five styles with live previews, and can try the full
+invitation in demo mode (`/podglad`) before creating it:
+
+| Style      | Mood                                             |
+| ---------- | ------------------------------------------------ |
+| Wieczór    | Midnight blue and gold with a serif, for a date  |
+| Słodki     | Pastel lilac and peach, rounded and cute          |
+| Ziomek     | Sky blue, chunky outlines, for friends            |
+| Retro PC   | A Windows 95 dialog, for a joke invite           |
+| Prosty     | Black on white, fits anything                    |
+
+Each style is a set of CSS custom properties under `[data-theme]` in
+`src/lib/themes.css`, plus its copy and fireworks colors in `src/lib/themes.ts`.
+
 ## How it works
 
 | URL             | Who      | What                                                        |
@@ -15,6 +31,7 @@ burst of fireworks. You follow everything on your own status page.
 | `/`             | you      | Create an invitation: her name and up to 6 date ideas       |
 | `/dr5hg1`       | her      | The question, the runaway button, picking and confirming    |
 | `/dr5hg1/status`| you      | Whether she opened it, what she chose, how often she tried "no" |
+| `/podglad`      | you      | Demo of a style, nothing is saved                           |
 
 Each invitation gets a random 6-character code (`a-z0-9`). The status page is simply the
 invite link with `/status` appended, so it is easy to recover if you lose it.
@@ -72,7 +89,12 @@ Then run `npm run db:push` once with the same variables to create the tables.
 ```
 src/
 ├── lib/
-│   ├── components/RunawayButton.svelte   the button that can't be pressed
+│   ├── components/
+│   │   ├── InvitationFlow.svelte         question → pick → review → fireworks
+│   │   ├── InvitationPreview.svelte      static preview of a style
+│   │   ├── RunawayButton.svelte          the button that can't be pressed
+│   │   └── ThemePicker.svelte
+│   ├── themes.ts / themes.css            the five styles
 │   ├── server/
 │   │   ├── db/schema.ts                  tables and relations
 │   │   └── invitations.ts                data access
@@ -81,7 +103,8 @@ src/
 ├── params/code.ts                        matches 6-char invitation codes
 └── routes/
     ├── +page.svelte                      invitation creator
-    └── [code=code]/
-        ├── +page.svelte                  the invitation
-        └── status/+page.svelte           status for the sender
+    ├── [code=code]/
+    │   ├── +page.svelte                  the invitation
+    │   └── status/+page.svelte           status for the sender
+    └── podglad/+page.svelte              style demo
 ```
