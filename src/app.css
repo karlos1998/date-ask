@@ -1,0 +1,129 @@
+:root {
+	--cherry: #6e0f2c;
+	--cherry-deep: #4d0a1f;
+	--cherry-soft: #8a1d3f;
+	--blush: #ff8fb1;
+	--butter: #ffd45c;
+	--milk: #fff1f4;
+	--ink: #2a0612;
+
+	--font-display: 'Shrikhand', 'Georgia', serif;
+	--font-body: 'Figtree Variable', system-ui, sans-serif;
+
+	--radius-pill: 999px;
+	--radius-field: 14px;
+	--gutter: clamp(1rem, 5vw, 2.5rem);
+
+	color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+	background: var(--cherry);
+	color: var(--milk);
+	font-family: var(--font-body);
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	margin: 0;
+	font-family: var(--font-display);
+	font-weight: 400;
+	line-height: 1.05;
+	text-wrap: balance;
+}
+
+p {
+	margin: 0;
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--butter);
+	text-underline-offset: 0.2em;
+}
+
+button,
+input {
+	font: inherit;
+	color: inherit;
+}
+
+:focus-visible {
+	outline: 3px solid var(--butter);
+	outline-offset: 3px;
+}
+
+/* Shared button styles */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 3.25rem;
+	padding: 0.75rem 1.75rem;
+	border: 2px solid transparent;
+	border-radius: var(--radius-pill);
+	font-weight: 700;
+	font-size: 1.0625rem;
+	cursor: pointer;
+	text-decoration: none;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		transform 0.15s ease,
+		background-color 0.15s ease;
+}
+
+.btn:active {
+	transform: scale(0.97);
+}
+
+.btn:disabled {
+	opacity: 0.6;
+	cursor: progress;
+}
+
+.btn-yes {
+	background: var(--butter);
+	color: var(--ink);
+}
+
+.btn-ghost {
+	background: transparent;
+	border-color: color-mix(in srgb, var(--milk) 55%, transparent);
+	color: var(--milk);
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}
