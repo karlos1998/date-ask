@@ -9,10 +9,10 @@ export interface Theme {
 	/** One line shown in the picker so the sender knows the mood. */
 	mood: string;
 	themeColor: string;
-	fireworks: string[];
+	fireworks: readonly string[];
 	copy: {
 		/** Shown under the buttons as she keeps chasing "no". The first entry is shown before any attempt. */
-		teases: string[];
+		teases: readonly string[];
 		pickTitle: string;
 		reviewTitle: string;
 		confirm: string;

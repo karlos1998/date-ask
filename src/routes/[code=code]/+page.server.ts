@@ -10,6 +10,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		name: invitation.inviteeName,
+		theme: invitation.theme,
 		options: invitation.options.map(({ id, label }) => ({ id, label })),
 		answer: invitation.chosenOption?.label ?? null
 	};
