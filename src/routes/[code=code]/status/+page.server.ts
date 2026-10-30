@@ -8,6 +8,7 @@ export const load: PageServerLoad = async ({ params, url }) => {
 
 	return {
 		name: invitation.inviteeName,
+		theme: invitation.theme,
 		inviteUrl: `${url.origin}/${invitation.code}`,
 		justCreated: url.searchParams.has('created'),
 		options: invitation.options.map(({ id, label }) => ({ id, label })),

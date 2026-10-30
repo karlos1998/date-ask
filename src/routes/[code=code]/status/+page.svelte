@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
+	import InvitationPreview from '$lib/components/InvitationPreview.svelte';
 	import { formatDateTime, formatTimes } from '$lib/format';
+	import { getTheme } from '$lib/themes';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -13,6 +15,14 @@
 
 	const answered = $derived(data.answeredAt !== null);
 	const chosen = $derived(data.options.find((option) => option.id === data.chosenOptionId));
+	const theme = $derived(getTheme(data.theme));
+
+	/** Demo of her invitation. Opening her real link would count as her first visit. */
+	const demoUrl = $derived.by(() => {
+		const params = new URLSearchParams({ styl: theme.id, imie: data.name });
+		for (const option of data.options) params.append('opcja', option.label);
+		return `/podglad?${params}`;
+	});
 
 	onMount(() => {
 		canShare = typeof navigator.share === 'function';
@@ -89,6 +99,14 @@
 		</p>
 	</section>
 
+	<section class="style" aria-labelledby="style-title">
+		<h2 id="style-title">Styl: {theme.name}</h2>
+		<a class="style-preview" href={demoUrl} target="_blank" rel="noopener">
+			<InvitationPreview themeId={theme.id} name={data.name} compact />
+			<span>Zobacz, jak to u niej wygląda</span>
+		</a>
+	</section>
+
 	<section class="proposals" aria-labelledby="proposals-title">
 		<h2 id="proposals-title">Twoje propozycje</h2>
 		<ul>
@@ -115,9 +133,9 @@
 
 	.banner {
 		padding: 0.875rem 1.25rem;
-		border-radius: 14px;
-		background: var(--milk);
-		color: var(--ink);
+		border-radius: var(--radius);
+		background: var(--surface);
+		border: 2px solid var(--accent);
 		font-weight: 600;
 	}
 
@@ -127,32 +145,34 @@
 	}
 
 	h1 {
-		font-size: clamp(2.25rem, 9vw, 3.25rem);
+		font-size: clamp(2rem, 8vw, 2.75rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
 		overflow-wrap: anywhere;
 	}
 
 	h2 {
-		font-family: var(--font-body);
 		font-weight: 700;
 		font-size: 1.125rem;
 	}
 
 	.meta {
-		color: color-mix(in srgb, var(--milk) 80%, transparent);
+		color: var(--muted);
 	}
 
 	.choice {
 		justify-self: start;
 		padding: 1.25rem 1.5rem;
 		border-radius: 20px;
-		background: var(--butter);
-		color: var(--ink);
+		background: var(--accent);
+		color: var(--accent-text);
 		font-weight: 700;
 		font-size: 1.25rem;
 		transform: rotate(-1.5deg);
 	}
 
 	.share,
+	.style,
 	.proposals {
 		display: grid;
 		gap: 0.75rem;
@@ -161,7 +181,8 @@
 	.link {
 		padding: 0.875rem 1rem;
 		border-radius: 14px;
-		background: var(--cherry-deep);
+		background: var(--surface);
+		border: 2px solid var(--line);
 		font-weight: 600;
 		overflow-wrap: anywhere;
 		user-select: all;
@@ -175,13 +196,13 @@
 
 	.hint {
 		font-size: 0.9375rem;
-		color: color-mix(in srgb, var(--milk) 70%, transparent);
+		color: var(--muted);
 	}
 
 	code {
 		font-family: inherit;
 		font-weight: 700;
-		color: var(--milk);
+		color: var(--text);
 	}
 
 	ul {
@@ -198,21 +219,30 @@
 		align-items: center;
 		gap: 1rem;
 		padding: 0.875rem 1rem;
-		border: 2px solid var(--cherry-soft);
+		border: 2px solid var(--line);
+		background: var(--surface);
 		border-radius: 14px;
 	}
 
 	li.picked {
-		border-color: var(--butter);
+		border-color: var(--accent);
 	}
 
 	.tag {
 		flex: none;
 		padding: 0.125rem 0.625rem;
 		border-radius: var(--radius-pill);
-		background: var(--butter);
-		color: var(--ink);
+		background: var(--accent);
+		color: var(--accent-text);
 		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.style-preview {
+		display: grid;
+		grid-template-columns: 9rem 1fr;
+		align-items: center;
+		gap: 1rem;
 		font-weight: 700;
 	}
 
