@@ -41,8 +41,7 @@ invite link with `/status` appended, so it is easy to recover if you lose it.
 
 - [SvelteKit](https://svelte.dev/docs/kit) with **Svelte 5** (runes) and TypeScript: server-side rendering,
   routing and the backend (load functions + form actions) in one app
-- [Drizzle ORM](https://orm.drizzle.team) on **SQLite / libSQL**: a local file in development,
-  [Turso](https://turso.tech) in production
+- [Drizzle ORM](https://orm.drizzle.team) on **SQLite / libSQL**: a persistent SQLite file in production
 - [Valibot](https://valibot.dev) for form validation
 - [canvas-confetti](https://github.com/catdad/canvas-confetti) for the fireworks
 - Plain scoped CSS, no UI framework
@@ -75,15 +74,37 @@ To open the app on your phone over the local network, run `npm run dev -- --host
 
 ## Deployment
 
-The project uses `adapter-auto`, so it deploys to Vercel or Netlify without extra config.
-Create a database on Turso and set these environment variables:
+Production runs at https://date-ask.letscode.it using `adapter-node` and Docker.
+Pushes to `main` build and check the app in GitHub Actions, transfer the image over SSH,
+and start it in `/opt/apps/date-ask` with a health check. Configure GitHub secrets
+`SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`, and `SERVER_KNOWN_HOSTS`.
 
-```
-DATABASE_URL=libsql://your-db.turso.io
-DATABASE_AUTH_TOKEN=...
+`docker-compose.production.yml` connects the app to the server's existing `nginx-proxy`
+network. Cloudflare provides public HTTPS and connects over HTTP (Flexible);
+`HTTPS_METHOD=nohttps` prevents redirect loops. `ORIGIN` keeps SvelteKit form submissions
+working through the proxy. No application secrets or external database are required.
+
+SQLite lives in the named volume `date-ask_data`, mounted at `/app/data`.
+Deployments never replace this volume. Each deployment saves a consistent SQLite backup
+under `/app/data/backups` before applying versioned Drizzle migrations at startup.
+Never use `docker compose down -v` on production: it deletes the database and backups.
+Backups in this volume survive deployments, but do not protect against loss of the server.
+
+For schema changes, run `npx drizzle-kit generate`, review and commit the generated SQL.
+Production applies pending migrations automatically; do not use `db:push` there.
+Local databases created with `db:push` can continue using it during development.
+
+Manual operations from `/opt/apps/date-ask`:
+
+```bash
+export TAG=$(cat TAG)
+docker compose -f docker-compose.production.yml ps
+docker compose -f docker-compose.production.yml logs --tail=100 app
+docker compose -f docker-compose.production.yml run --rm --no-deps app node scripts/backup.mjs
 ```
 
-Then run `npm run db:push` once with the same variables to create the tables.
+Failed startup restores the previous image when available. Database migrations are not
+reversed automatically; keep migrations compatible with the previous release.
 
 ## Project structure
 

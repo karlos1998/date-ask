@@ -1,0 +1,12 @@
+node_modules
+.svelte-kit
+build
+.git
+.github
+.idea
+.env
+.env.*
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*

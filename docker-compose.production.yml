@@ -1,0 +1,26 @@
+name: date-ask
+services:
+  app:
+    image: date-ask:${TAG:?Set TAG to the deployed commit}
+    restart: unless-stopped
+    environment:
+      ORIGIN: https://date-ask.letscode.it
+      DATABASE_URL: file:/app/data/date-ask.db
+      VIRTUAL_HOST: date-ask.letscode.it
+      VIRTUAL_PORT: '3000'
+      HTTPS_METHOD: nohttps
+    volumes:
+      - data:/app/data
+    networks: [nginx-proxy]
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 384m
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+volumes:
+  data:
+networks:
+  nginx-proxy:
+    external: true
