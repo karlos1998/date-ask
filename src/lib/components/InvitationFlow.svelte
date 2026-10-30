@@ -57,111 +57,120 @@
 {/snippet}
 
 <div class="flow" data-theme={theme.id}>
-	{#if finalAnswer}
-		<section class="card step" in:fly={{ y: 24, duration: 500 }}>
-			{@render windowBar()}
-			<h1 class="themed-title">{copy.doneTitle}</h1>
-			<p class="choice">{finalAnswer}</p>
-			<p class="lead">{copy.doneMessage}</p>
-		</section>
-	{:else if step === 'ask'}
-		<section class="card step" out:fade={{ duration: 150 }}>
-			{@render windowBar()}
-			<h1 class="themed-title question">Hej, {name}. Umówimy się?</h1>
+	<div class="stage">
+		{#if finalAnswer}
+			<section class="card step" in:fly={{ y: 24, duration: 500 }}>
+				{@render windowBar()}
+				<h1 class="themed-title">{copy.doneTitle}</h1>
+				<p class="choice">{finalAnswer}</p>
+				<p class="lead">{copy.doneMessage}</p>
+			</section>
+		{:else if step === 'ask'}
+			<section class="card step" out:fade={{ duration: 150 }}>
+				{@render windowBar()}
+				<h1 class="themed-title question">Hej, {name}. Umówimy się?</h1>
 
-			<div class="answers">
-				<button
-					bind:this={yesButton}
-					type="button"
-					class="btn btn-yes yes"
-					style:transform="scale({yesScale})"
-					onclick={() => (step = 'pick')}
-				>
-					Tak
-				</button>
-				<RunawayButton avoid={yesButton} onescape={(attempts) => (noAttempts = attempts)}>
-					Nie
-				</RunawayButton>
-			</div>
-
-			<p class="tease" aria-live="polite">{tease}</p>
-		</section>
-	{:else if step === 'pick'}
-		<section class="card step" in:fly={{ y: 24, duration: 400, delay: 150 }}>
-			{@render windowBar()}
-			<h1 class="themed-title">{copy.pickTitle}</h1>
-			<ul class="options">
-				{#each options as option (option.id)}
-					<li>
-						<button
-							type="button"
-							class="option"
-							class:selected={option.id === selectedId}
-							onclick={() => choose(option.id)}
-						>
-							{option.label}
-						</button>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{:else if step === 'review' && selected}
-		<section class="card step" in:fly={{ y: 24, duration: 400 }}>
-			{@render windowBar()}
-			<h1 class="themed-title">{copy.reviewTitle}</h1>
-			<p class="lead">Wybrałaś:</p>
-			<p class="choice">{selected.label}</p>
-
-			{#if demo}
-				<div class="review-actions">
-					<button type="button" class="btn btn-yes" onclick={confirmDemo}>{copy.confirm}</button>
-					<button type="button" class="btn btn-ghost" onclick={() => (step = 'pick')}>
-						Zmień wybór
+				<div class="answers">
+					<button
+						bind:this={yesButton}
+						type="button"
+						class="btn btn-yes yes"
+						style:transform="scale({yesScale})"
+						onclick={() => (step = 'pick')}
+					>
+						Tak
 					</button>
+					<RunawayButton avoid={yesButton} onescape={(attempts) => (noAttempts = attempts)}>
+						Nie
+					</RunawayButton>
 				</div>
-			{:else}
-				<form
-					method="POST"
-					action="?/accept"
-					class="review-actions"
-					use:enhance={() => {
-						submitting = true;
-						return async ({ result, update }) => {
-							await update();
-							submitting = false;
-							if (result.type === 'success') launchFireworks(theme.fireworks);
-						};
-					}}
-				>
-					<input type="hidden" name="optionId" value={selected.id} />
-					<input type="hidden" name="noAttempts" value={noAttempts} />
-					<button class="btn btn-yes" disabled={submitting}>
-						{submitting ? 'Zapisuję…' : copy.confirm}
-					</button>
-					<button type="button" class="btn btn-ghost" onclick={() => (step = 'pick')}>
-						Zmień wybór
-					</button>
-				</form>
-			{/if}
 
-			{#if error}
-				<p class="error" role="alert">{error}</p>
-			{/if}
-		</section>
-	{/if}
+				<p class="tease" aria-live="polite">{tease}</p>
+			</section>
+		{:else if step === 'pick'}
+			<section class="card step" in:fly={{ y: 24, duration: 400, delay: 150 }}>
+				{@render windowBar()}
+				<h1 class="themed-title">{copy.pickTitle}</h1>
+				<ul class="options">
+					{#each options as option (option.id)}
+						<li>
+							<button
+								type="button"
+								class="option"
+								class:selected={option.id === selectedId}
+								onclick={() => choose(option.id)}
+							>
+								{option.label}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</section>
+		{:else if step === 'review' && selected}
+			<section class="card step" in:fly={{ y: 24, duration: 400 }}>
+				{@render windowBar()}
+				<h1 class="themed-title">{copy.reviewTitle}</h1>
+				<p class="lead">Wybrałaś:</p>
+				<p class="choice">{selected.label}</p>
+
+				{#if demo}
+					<div class="review-actions">
+						<button type="button" class="btn btn-yes" onclick={confirmDemo}>{copy.confirm}</button>
+						<button type="button" class="btn btn-ghost" onclick={() => (step = 'pick')}>
+							Zmień wybór
+						</button>
+					</div>
+				{:else}
+					<form
+						method="POST"
+						action="?/accept"
+						class="review-actions"
+						use:enhance={() => {
+							submitting = true;
+							return async ({ result, update }) => {
+								await update();
+								submitting = false;
+								if (result.type === 'success') launchFireworks(theme.fireworks);
+							};
+						}}
+					>
+						<input type="hidden" name="optionId" value={selected.id} />
+						<input type="hidden" name="noAttempts" value={noAttempts} />
+						<button class="btn btn-yes" disabled={submitting}>
+							{submitting ? 'Zapisuję…' : copy.confirm}
+						</button>
+						<button type="button" class="btn btn-ghost" onclick={() => (step = 'pick')}>
+							Zmień wybór
+						</button>
+					</form>
+				{/if}
+
+				{#if error}
+					<p class="error" role="alert">{error}</p>
+				{/if}
+			</section>
+		{/if}
+	</div>
 </div>
 
 <style>
+	/* Covers the whole viewport so the theme's background also shows when scrolling past the edges. */
 	.flow {
+		position: fixed;
+		inset: 0;
+		overflow-x: clip;
+		overflow-y: auto;
+	}
+
+	.stage {
 		display: grid;
 		place-items: center;
-		min-height: 100dvh;
+		min-height: 100%;
 		padding: var(--gutter);
-		overflow-x: clip;
 	}
 
 	/* Steps share one grid cell so the outgoing and incoming ones overlap during transitions. */
-	.flow > * {
+	.stage > * {
 		grid-area: 1 / 1;
 	}
 
