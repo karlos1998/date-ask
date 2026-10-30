@@ -1,0 +1,203 @@
+/*
+ * Invitation themes. Every theme sets the same design tokens, so components only
+ * ever read variables. A theme applies to any element with `data-theme`, which
+ * lets the creator render small live previews of all of them side by side.
+ */
+
+[data-theme] {
+	--card-bg: transparent;
+	--card-border: none;
+	--card-shadow: none;
+	--card-radius: 0;
+	--card-padding: 0;
+	--display-weight: 400;
+	--display-tracking: 0;
+	--button-shadow: none;
+
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-body);
+}
+
+/* Wieczór: midnight blue, champagne gold and a high-contrast serif. */
+[data-theme='evening'] {
+	--bg: #18223a;
+	--surface: #222f4d;
+	--text: #f6efe4;
+	--muted: color-mix(in srgb, #f6efe4 72%, transparent);
+	--accent: #e9c46a;
+	--accent-text: #18223a;
+	--line: color-mix(in srgb, #f6efe4 45%, transparent);
+	--font-display: 'DM Serif Display', Georgia, serif;
+	--font-body: 'Figtree Variable', system-ui, sans-serif;
+	--radius: 16px;
+	--button-radius: 999px;
+}
+
+/* Słodki: lilac, peach and a round, bouncy typeface. Buttons sit on a soft ledge. */
+[data-theme='sweet'] {
+	--bg: #f6e9ff;
+	--surface: #ffffff;
+	--text: #4a2a6b;
+	--muted: color-mix(in srgb, #4a2a6b 70%, transparent);
+	--accent: #ff9f80;
+	--accent-text: #3d1d5c;
+	--line: color-mix(in srgb, #4a2a6b 30%, transparent);
+	--font-display: 'Baloo 2 Variable', 'Arial Rounded MT Bold', sans-serif;
+	--font-body: 'Baloo 2 Variable', 'Arial Rounded MT Bold', sans-serif;
+	--display-weight: 800;
+	--radius: 22px;
+	--button-radius: 999px;
+	--button-shadow: 0 5px 0 rgb(74 42 107 / 0.18);
+	--card-bg: #ffffff;
+	--card-radius: 32px;
+	--card-padding: clamp(1.5rem, 6vw, 2.5rem);
+	--card-shadow: 0 1.25rem 2.5rem -1rem rgb(74 42 107 / 0.25);
+}
+
+/* Ziomek: sky blue, chunky outlines and hard offset shadows. */
+[data-theme='buddy'] {
+	--bg: #9fd8ff;
+	--surface: #ffffff;
+	--text: #0d1b2a;
+	--muted: color-mix(in srgb, #0d1b2a 72%, transparent);
+	--accent: #ffe14d;
+	--accent-text: #0d1b2a;
+	--line: #0d1b2a;
+	--font-display: 'Bricolage Grotesque Variable', 'Arial Black', sans-serif;
+	--font-body: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+	--display-weight: 800;
+	--display-tracking: -0.02em;
+	--radius: 10px;
+	--button-radius: 10px;
+	--button-shadow: 4px 4px 0 #0d1b2a;
+	--card-bg: #ffffff;
+	--card-border: 3px solid #0d1b2a;
+	--card-radius: 16px;
+	--card-padding: clamp(1.5rem, 6vw, 2.5rem);
+	--card-shadow: 8px 8px 0 #0d1b2a;
+}
+
+[data-theme='buddy'] .btn {
+	border: 3px solid #0d1b2a;
+}
+
+[data-theme='buddy'] .btn:active {
+	transform: translate(3px, 3px);
+	box-shadow: 1px 1px 0 #0d1b2a;
+}
+
+/* Retro PC: a teal desktop with a grey dialog window, pixel font and bevelled buttons. */
+[data-theme='retro'] {
+	--bg: #008080;
+	--surface: #ffffff;
+	--text: #000000;
+	--muted: #000000;
+	--accent: #c0c0c0;
+	--accent-text: #000000;
+	--line: #000000;
+	--font-display: 'Pixelify Sans Variable', 'Courier New', monospace;
+	--font-body: 'Pixelify Sans Variable', 'Courier New', monospace;
+	--display-weight: 500;
+	--radius: 0;
+	--button-radius: 0;
+	--button-shadow:
+		inset -2px -2px 0 #808080, inset 2px 2px 0 #ffffff, inset -3px -3px 0 #404040;
+	--card-bg: #c0c0c0;
+	--card-border: 2px solid #000000;
+	--card-radius: 0;
+	--card-padding: clamp(1.25rem, 5vw, 2rem);
+	--card-shadow: inset -2px -2px 0 #808080, inset 2px 2px 0 #ffffff, 6px 6px 0 rgb(0 0 0 / 0.35);
+}
+
+[data-theme='retro'] .card {
+	color: #000000;
+}
+
+[data-theme='retro'] .btn {
+	min-width: 6rem;
+	border: 1px solid #000000;
+	background: #c0c0c0;
+	color: #000000;
+	font-weight: 500;
+}
+
+[data-theme='retro'] .btn:active {
+	transform: none;
+	box-shadow:
+		inset 2px 2px 0 #808080,
+		inset -2px -2px 0 #ffffff;
+}
+
+[data-theme='retro'] .btn-yes {
+	outline: 1px dotted #000000;
+	outline-offset: -6px;
+}
+
+[data-theme='retro'] .card-bar {
+	display: flex;
+}
+
+/* Prosty: white, black and nothing else. Works for any kind of meetup. */
+[data-theme='clean'] {
+	--bg: #ffffff;
+	--surface: #f3f4f6;
+	--text: #111827;
+	--muted: #4b5563;
+	--accent: #111827;
+	--accent-text: #ffffff;
+	--line: #d1d5db;
+	--font-display: 'Instrument Sans Variable', system-ui, sans-serif;
+	--font-body: 'Instrument Sans Variable', system-ui, sans-serif;
+	--display-weight: 700;
+	--display-tracking: -0.035em;
+	--radius: 12px;
+	--button-radius: 12px;
+}
+
+/* Shared pieces every theme styles through the tokens above. */
+.card {
+	position: relative;
+	background: var(--card-bg);
+	border: var(--card-border);
+	border-radius: var(--card-radius);
+	box-shadow: var(--card-shadow);
+	padding: var(--card-padding);
+}
+
+/* Window title bar, only visible in the retro theme. */
+.card-bar {
+	display: none;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin: calc(var(--card-padding) * -1 + 3px) calc(var(--card-padding) * -1 + 3px) 1.25rem;
+	padding: 0.25rem 0.375rem 0.25rem 0.625rem;
+	background: linear-gradient(90deg, #000080, #1084d0);
+	color: #ffffff;
+	font-size: 0.9375rem;
+	text-align: left;
+}
+
+.card-bar-close {
+	display: grid;
+	place-items: center;
+	width: 1.25rem;
+	height: 1.125rem;
+	background: #c0c0c0;
+	color: #000000;
+	font-size: 0.75rem;
+	line-height: 1;
+	box-shadow:
+		inset -1px -1px 0 #404040,
+		inset 1px 1px 0 #ffffff;
+}
+
+.themed-title {
+	font-family: var(--font-display);
+	font-weight: var(--display-weight);
+	letter-spacing: var(--display-tracking);
+	line-height: 1.05;
+	text-wrap: balance;
+	overflow-wrap: anywhere;
+}

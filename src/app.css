@@ -1,20 +1,25 @@
+/*
+ * App chrome (creator and status pages). Kept neutral on purpose so the
+ * invitation themes in `$lib/themes.css` are what stands out.
+ */
 :root {
-	--cherry: #6e0f2c;
-	--cherry-deep: #4d0a1f;
-	--cherry-soft: #8a1d3f;
-	--blush: #ff8fb1;
-	--butter: #ffd45c;
-	--milk: #fff1f4;
-	--ink: #2a0612;
+	--bg: #f3f3f6;
+	--surface: #ffffff;
+	--text: #1c1b22;
+	--muted: #5c5a66;
+	--accent: #3b30c4;
+	--accent-text: #ffffff;
+	--line: #d9d8e0;
+	--danger-bg: #fde8e8;
+	--danger-text: #8a1c1c;
 
-	--font-display: 'Shrikhand', 'Georgia', serif;
+	--font-display: 'Figtree Variable', system-ui, sans-serif;
 	--font-body: 'Figtree Variable', system-ui, sans-serif;
 
-	--radius-pill: 999px;
-	--radius-field: 14px;
+	--radius: 14px;
+	--button-radius: 999px;
+	--button-shadow: none;
 	--gutter: clamp(1rem, 5vw, 2.5rem);
-
-	color-scheme: dark;
 }
 
 *,
@@ -30,8 +35,8 @@ html {
 body {
 	margin: 0;
 	min-height: 100dvh;
-	background: var(--cherry);
-	color: var(--milk);
+	background: var(--bg);
+	color: var(--text);
 	font-family: var(--font-body);
 	font-size: 1.0625rem;
 	line-height: 1.5;
@@ -42,9 +47,7 @@ h1,
 h2,
 h3 {
 	margin: 0;
-	font-family: var(--font-display);
-	font-weight: 400;
-	line-height: 1.05;
+	line-height: 1.15;
 	text-wrap: balance;
 }
 
@@ -54,7 +57,7 @@ p {
 }
 
 a {
-	color: var(--butter);
+	color: var(--accent);
 	text-underline-offset: 0.2em;
 }
 
@@ -65,11 +68,11 @@ input {
 }
 
 :focus-visible {
-	outline: 3px solid var(--butter);
+	outline: 3px solid var(--accent);
 	outline-offset: 3px;
 }
 
-/* Shared button styles */
+/* Buttons read theme tokens, so the same markup works in every invitation style. */
 .btn {
 	display: inline-flex;
 	align-items: center;
@@ -78,15 +81,18 @@ input {
 	min-height: 3.25rem;
 	padding: 0.75rem 1.75rem;
 	border: 2px solid transparent;
-	border-radius: var(--radius-pill);
+	border-radius: var(--button-radius);
+	box-shadow: var(--button-shadow);
 	font-weight: 700;
 	font-size: 1.0625rem;
+	line-height: 1.2;
 	cursor: pointer;
 	text-decoration: none;
 	touch-action: manipulation;
 	-webkit-tap-highlight-color: transparent;
 	transition:
 		transform 0.15s ease,
+		box-shadow 0.15s ease,
 		background-color 0.15s ease;
 }
 
@@ -100,14 +106,14 @@ input {
 }
 
 .btn-yes {
-	background: var(--butter);
-	color: var(--ink);
+	background: var(--accent);
+	color: var(--accent-text);
 }
 
 .btn-ghost {
 	background: transparent;
-	border-color: color-mix(in srgb, var(--milk) 55%, transparent);
-	color: var(--milk);
+	border-color: var(--line);
+	color: var(--text);
 }
 
 .visually-hidden {

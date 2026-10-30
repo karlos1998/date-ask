@@ -25,7 +25,7 @@ export async function createInvitation(input: CreateInvitationInput): Promise<st
 
 	// A batch runs both inserts atomically in a single round trip.
 	await db.batch([
-		db.insert(invitations).values({ code, inviteeName: input.name }),
+		db.insert(invitations).values({ code, inviteeName: input.name, theme: input.theme }),
 		db
 			.insert(options)
 			.values(input.options.map((label, position) => ({ invitationCode: code, label, position })))

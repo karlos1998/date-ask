@@ -19,8 +19,12 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
+		"@fontsource-variable/baloo-2": "^5.2.0",
+		"@fontsource-variable/bricolage-grotesque": "^5.2.0",
 		"@fontsource-variable/figtree": "^5.2.0",
-		"@fontsource/shrikhand": "^5.2.0",
+		"@fontsource-variable/instrument-sans": "^5.2.0",
+		"@fontsource-variable/pixelify-sans": "^5.2.0",
+		"@fontsource/dm-serif-display": "^5.2.0",
 		"@libsql/client": "^0.15.0",
 		"canvas-confetti": "^1.9.3",
 		"drizzle-orm": "^0.44.0",

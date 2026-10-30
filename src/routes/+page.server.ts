@@ -8,13 +8,15 @@ export const actions = {
 	default: async ({ request }) => {
 		const form = await request.formData();
 		const name = form.get('name');
+		const theme = form.get('theme');
 		const options = form.getAll('option');
 
-		const result = v.safeParse(createInvitationSchema, { name, options });
+		const result = v.safeParse(createInvitationSchema, { name, theme, options });
 
 		if (!result.success) {
 			return fail(400, {
 				name: typeof name === 'string' ? name : '',
+				theme: typeof theme === 'string' ? theme : '',
 				options: options.map(String),
 				error: result.issues[0].message
 			});

@@ -1,10 +1,14 @@
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+// Relative import: drizzle-kit loads this file outside of Vite, where `$lib` doesn't resolve.
+import { DEFAULT_THEME } from '../../themes';
 
 export const invitations = sqliteTable('invitations', {
 	/** Short public code used in the URL, e.g. `dr5hg1`. */
 	code: text('code').primaryKey(),
 	inviteeName: text('invitee_name').notNull(),
+	/** Visual style, one of the ids in `$lib/themes`. */
+	theme: text('theme').notNull().default(DEFAULT_THEME),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
 		.$defaultFn(() => new Date()),

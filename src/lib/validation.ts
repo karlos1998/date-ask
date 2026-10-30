@@ -1,10 +1,12 @@
 import * as v from 'valibot';
+import { THEME_IDS } from './themes';
 
 export const MAX_NAME_LENGTH = 40;
 export const MAX_OPTION_LENGTH = 80;
 export const MAX_OPTIONS = 6;
 
 export const createInvitationSchema = v.object({
+	theme: v.picklist(THEME_IDS, 'Wybierz styl zaproszenia.'),
 	name: v.pipe(
 		v.string('Wpisz jej imię.'),
 		v.trim(),
